@@ -1,0 +1,6 @@
+python_speech_features
+resampy
+scipy
+gdown
+tqdm
+tensorflow-gan
