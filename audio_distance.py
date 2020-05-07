@@ -252,14 +252,14 @@ class AudioDistance(object):
       ref_features_ = self.get_features(sess=sess, files=None)
       eval_features_ = self.get_features(sess=sess, files=files)
 
-    ref_features_same_cond, ref_features_other_cond = np.split(
-        ref_features_, 2)
-
+    # ref_features_same_cond, ref_features_other_cond = np.split(
+    #     ref_features_, 2)
+    ref_features_same_cond = ref_features_
     print('AudioDistance: got features from both samples, computing '
           'metrics...')
     t0 = time.time()
     dist_vals = sess.run(self.dists,
-                         feed_dict={self.ref_features: ref_features_other_cond,
+                         feed_dict={self.ref_features: ref_features_same_cond,
                                     self.eval_features: eval_features_})
     print('AudioDistance: computed metrics from features '
           'in %.1fs.', time.time() - t0)
@@ -268,13 +268,13 @@ class AudioDistance(object):
       if self.keep_features and (not self._has_benchmark_features()):
         self.kept_features['benchmark'] = eval_features_
 
-    if self.do_conditional_dsds:
-      print('Evaluation with the same conditioning.')
-      t0 = time.time()
-      dist_vals += sess.run(
-          self.dists, feed_dict={self.ref_features: ref_features_same_cond,
-                                 self.eval_features: eval_features_})
-      print('AudioDistance: computed metrics from features '
-            'in %.1fs.', time.time() - t0)
+    # if self.do_conditional_dsds:
+    #   print('Evaluation with the same conditioning.')
+    #   t0 = time.time()
+    #   dist_vals += sess.run(
+    #       self.dists, feed_dict={self.ref_features: ref_features_same_cond,
+    #                              self.eval_features: eval_features_})
+    #   print('AudioDistance: computed metrics from features '
+    #         'in %.1fs.', time.time() - t0)
     print('AudioDistance: finished evaluation.')
     return dist_vals
